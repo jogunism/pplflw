@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import './css/App.css';
 
 import { RootState } from './redux/reducers';
-import { addEmployee, getEmployeeList, showInputboxs } from './redux/actions';
+import { addEmployee, getEmployeeList, hideEditInputBox, hideInputboxs, showAddInputboxs, showEditInputBox } from './redux/actions';
+import { Employee } from './redux/constants';
 
 export interface AppProps{};
 
@@ -33,22 +34,55 @@ const App: React.FC<AppProps> = () => {
     }
   };
 
-  const addButtonHandler = () => {
-    dispatch(showInputboxs());
+  const displayButtons = (o: Employee) => {
+    if (o.showInput) {
+      return (
+        <div>
+          <button type="button" className="btn" onClick={ addEmployeeHandler }>+</button> 
+          <button type="button" className="btn" onClick={ cancelAddEmployeeHandler }>x</button>
+        </div>
+      );
+    } else if (o.showEditButton) {
+      return (
+        <button type="button" className="btn" onClick={() => editEmployeeHandler(o.seq) }>Edit</button>
+      );
+    }
   };
 
-  const addEmployeeAction = () => {
+  const checkboxHandler = (e: React.FormEvent<HTMLInputElement>) => {
+    let checkbox = e.target as any;
+    let seq: number = parseInt(checkbox.value);
+    if (checkbox.checked) {
+      dispatch(showEditInputBox(seq));
+    } else {
+      dispatch(hideEditInputBox(seq));
+    }
+  };
+
+  const addButtonHandler = () => {
+    dispatch(showAddInputboxs());
+  };
+
+  const addEmployeeHandler = () => {
     let id = inputId.current?.value;
     let name = inputName.current?.value;
     if (!id || !name) {
+      // todo - inputbox red
       return;
     }
-
     dispatch(addEmployee({
       id,
       name,
     }))
   };
+
+  const cancelAddEmployeeHandler = () => {
+    dispatch(hideInputboxs());
+  };
+
+  const editEmployeeHandler = (seq: number | undefined) => {
+    console.log(seq);
+  }
 
   /* ----------------------
    * Hooks
@@ -91,40 +125,53 @@ const App: React.FC<AppProps> = () => {
                 <tr key={ idx }>
                   <td className="">
                     {
-                      !employee.isAdding ?  <input type="checkbox" className="checkbox" /> : ''
+                      employee.showCheckbox ?
+                        <input
+                          type="checkbox"
+                          className="checkbox"
+                          value={ employee.seq }
+                          onChange={ checkboxHandler }
+                        /> :
+                        ''
                     }
                   </td>
                   <td className="id">
                     {
-                      !employee.isAdding ? 
+                      !employee.showInput ? 
                         <span>{ employee.id }</span> :
-                        <input type="input" className="inputbox" placeholder="id" ref={ inputId } />
+                        <input type="input"
+                          className="inputbox"
+                          placeholder="id"
+                          ref={ inputId }
+                          defaultValue={ employee.id }
+                        />
                     }
                   </td>
                   <td className="name">
                     {
-                      !employee.isAdding ?
+                      !employee.showInput ?
                         <span>{ employee.name }</span> :
-                        <input type="input" className="inputbox" placeholder="name" ref={ inputName } />
+                        <input type="input"
+                          className="inputbox"
+                          placeholder="name"
+                          ref={ inputName }
+                          defaultValue={ employee.name }
+                        />
                     }
                   </td>
                   <td className="state">
                     {
-                      !employee.isAdding ?
+                      !employee.showInput ?
                         <span>{ displayState(employee.state) }</span> :
-                        <input type="input" className="inputbox" value="ADDED" readOnly />
+                        <input
+                          type="input"
+                          className="inputbox"
+                          defaultValue={ displayState(employee.state) }
+                          readOnly
+                        />
                     }
                   </td>
-                  <td>
-                    { 
-                      employee.isAdding ?
-                        <div>
-                          <button type="button" className="btn" onClick={ addEmployeeAction }>+</button> 
-                          <button type="button" className="btn">x</button>
-                        </div> :
-                        ''
-                    }
-                  </td>
+                  <td> { displayButtons(employee) }</td>
                 </tr>
               );
             })}

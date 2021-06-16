@@ -1,9 +1,17 @@
 import { ActionCreator, Dispatch } from 'redux';
-import { Employee, EMPLOYEE_LIST, MainActionType, SHOW_INPUTBOX } from '../constants';
+import { 
+  MainActionType,
+  Employee, 
+  RETRIVED_EMPLOYEE_LIST, 
+  SHOW_ADD_INPUTBOX,
+  HIDE_ADD_INPUTBOX, 
+  SHOW_EDIT_INPUTBOX,
+  HIDE_EDIT_INPUTBOX
+} from '../constants';
 import { mainService } from '../services';
 
 const employeeListSuccess: ActionCreator<MainActionType> = (data: Array<Employee>) => {
-  return { type: EMPLOYEE_LIST, payload: data };
+  return { type: RETRIVED_EMPLOYEE_LIST, payload: data };
 }
 
 export const getEmployeeList = () => {
@@ -17,9 +25,21 @@ export const getEmployeeList = () => {
   }
 };
 
-export const showInputboxs = () => {
-  return { type: SHOW_INPUTBOX};
+export const showEditInputBox = (seq?: number | undefined) => {
+  return { type: SHOW_EDIT_INPUTBOX, seq }
+}
+
+export const hideEditInputBox = (seq?: number | undefined) => {
+  return { type: HIDE_EDIT_INPUTBOX, seq }
+}
+
+export const showAddInputboxs = () => {
+  return { type: SHOW_ADD_INPUTBOX };
 };
+
+export const hideInputboxs = () => {
+  return { type: HIDE_ADD_INPUTBOX };
+}
 
 export const addEmployee = (o = {}) => {
   return async (dispatch: Dispatch) => {

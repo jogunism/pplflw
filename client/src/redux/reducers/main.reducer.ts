@@ -1,4 +1,12 @@
-import { Employee, EMPLOYEE_LIST, MainActionType, SHOW_INPUTBOX } from '../constants';
+import { 
+  MainActionType,
+  Employee,
+  RETRIVED_EMPLOYEE_LIST,
+  SHOW_ADD_INPUTBOX,
+  HIDE_ADD_INPUTBOX,
+  SHOW_EDIT_INPUTBOX,
+  HIDE_EDIT_INPUTBOX,
+} from '../constants';
 
 interface MainState {
   data: Array<Employee>;
@@ -14,25 +22,67 @@ export const mainReducer = (
 ): MainState => {
 
   switch (action.type) {
-    case EMPLOYEE_LIST:
+    case RETRIVED_EMPLOYEE_LIST:
       return {
         ...state,
-        data: action.payload
+        data: action.payload.map((o: Employee) => {
+          o.showCheckbox = true;
+          return o;
+        })
+      };
+
+    case SHOW_EDIT_INPUTBOX:
+      for (let o of state.data) {
+        if (o.seq === action.seq) {
+          o.showCheckbox = true;
+          o.showInput = true;
+          o.showFuncButton = false;
+          o.showEditButton = true;
+        }
       }
-    case SHOW_INPUTBOX:
+      return {
+        ...state
+      };
+
+    case HIDE_EDIT_INPUTBOX:
+      for (let o of state.data) {
+        if (o.seq === action.seq) {
+          o.showCheckbox = true;
+          o.showInput = false;
+          o.showFuncButton = false;
+          o.showEditButton = false;
+        }
+      }
+
+      return {
+        ...state
+      };
+
+    case SHOW_ADD_INPUTBOX:
       let _obj: Employee = {
         seq: 0,
         id: '',
         name: '',
-        state: -1,
-        isAdding: true,
-        isEditing: false
+        state: 0,
+
+        showCheckbox: false,
+        showInput: true,
+        showFuncButton: true,
+        showEditButton: false
       };
       state.data.push(_obj);
       return {
         ...state,
         data: state.data
       }
+
+    case HIDE_ADD_INPUTBOX:
+      state.data.splice(-1, 1)
+      return {
+        ...state,
+        data: state.data
+      }
+
     default:
       return state;
   }
