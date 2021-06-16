@@ -1,16 +1,21 @@
 'use strict';
 
 const express = require('express');
-const cors = require('cors');
-const app = express();
-const path = require('path');
 const router = express.Router();
-const port = 8080;
+const cors = require('cors');
+const path = require('path');
 
 const data = require('./resources/mockup');
+const port = 8080;
 
+// Add the router
+const app = express();
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.json());
+app.use('/', router);
+app.use(express.static(__dirname + '/client'));
+app.listen(port);
 
 router.get('/', (req, res) => {
   //__dirname : project folder.
@@ -18,14 +23,24 @@ router.get('/', (req, res) => {
 });
 
 // APIs.
-app.get('/api/employees', (_, resp) => {
-  return resp.send(data);
+app.get('/api/employees', (_, res) => {
+  return res.send(data);
 });
 
+app.post('/api/employees', (req, res) => {
+  data.push({
+    seq: data[data.length-1].seq,
+    id: req.body.id,
+    name: req.body.name,
+    state: 0 // default state: ADDED
+  });
 
-// Add the router
-app.use('/', router);
-app.use(express.static(__dirname + '/client'));
-app.listen(port);
+  return res.send(data);
+});
+
+app.put('/api/emplyees/:employeeId', (req, res) => {
+  console.log(req.params.employeeId);
+  return res.send();
+});
 
 console.log(`Running at Port ${port}`);

@@ -1,5 +1,6 @@
 // services
 import axios from 'axios';
+
 const http = axios.create({
   baseURL: 'http://localhost:8080/api/',
 });
@@ -14,5 +15,15 @@ export const mainService = {
     } catch (error) {
       return await Promise.reject(error);
     }
-  }
+  },
+
+  async addEmployee(o = {}) {
+    console.log(o);
+    try {
+      const response = await http.post('/employees', o);
+      return await Promise.resolve(response.data);
+    } catch (error) {
+      return await Promise.reject(error);
+    }
+  },
 };

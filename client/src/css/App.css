@@ -1,18 +1,18 @@
 html {
   font-size: 14px;
 }
-.App {
 
+.App {
+  margin: 10px;
 }
 
 .container {
-  border: 1px solid;
+  margin-bottom: 10px;
 }
 
 .list {
   border: 1px solid;
 }
-
 
 .list td {
   text-align: center;
@@ -20,21 +20,32 @@ html {
 
 .list .seq {
   width: 50px;
-  /* text-align: center; */
-}
-.list .id {
-  width: 100px;
-  /* text-align: center; */
-}
-.list .name {
-  width: 150px;
-  text-align: left;
-}
-.list .state {
-  width: 50px;
-  /* text-align: left; */
 }
 
-/* .list .center {
+.list .id {
+  width: 100px;
+}
+.list .id .inputbox {
+  width: 90px;
   text-align: center;
-} */
+}
+
+.list .name {
+  width: 200px;
+}
+.list .name .inputbox {
+  width: 190px;
+  text-align: center;
+}
+
+.list .state {
+  width: 100px;
+}
+.list .state .inputbox {
+  width: 90px;
+  text-align: center;
+}
+
+.list .button {
+  width: 80px;
+}
