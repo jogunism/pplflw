@@ -10,7 +10,7 @@ http://localhost:8080
 ## Test
 
 ```bash
-$ cd {PROJECT_FOLDER}Cancel changes
+$ cd {PROJECT_FOLDER}
 $ yarn test
 ```
 
