@@ -1,7 +1,7 @@
 
 ## How to run
 
-# yarn installment required.
+* yarn installment required.
 ```bash
 $ cd {PROJECT_FOLDER}
 $ ./start.sh
