@@ -8,7 +8,7 @@ http.defaults.headers.common['Content-Type'] = 'application/json';
 
 export const mainService = {
 
-  // list
+  /** List */
   async getEmployeeList() {
     try {
       const response = await http.get('/employees');
@@ -18,14 +18,14 @@ export const mainService = {
     }
   },
 
-  // edit
+  /** Edit */
   async editEmployee(o: {
     seq: number;
     id: string;
     name: string;
   }) {
     try {
-      const response = await http.put(`/employees/${o.id}`, o);
+      const response = await http.put(`/employee/${o.id}`, o);
       return await Promise.resolve(response.data);
     } catch (error) {
       return await Promise.reject(error);
@@ -41,7 +41,7 @@ export const mainService = {
     }
   },
 
-  // add
+  /** Add */
   async addEmployee(o = {}) {
     try {
       const response = await http.post('/employee', o);

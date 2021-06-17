@@ -24,7 +24,7 @@ export const mainReducer = (
 ): MainState => {
 
   switch (action.type) {
-    /** list */
+    /** List */
     case RETRIVED_EMPLOYEE_LIST:
       return {
         ...state,
@@ -35,7 +35,7 @@ export const mainReducer = (
         addButtonDisabled: false,
       };
 
-    /** edit */
+    /** Edit */
     case SET_EDIT_MODE:
       for (let o of state.data) {
         if (o.seq === action.seq) {
@@ -75,7 +75,7 @@ export const mainReducer = (
         ...state,
       };
 
-    /** add */
+    /** Add */
     case SET_ADD_MODE:
       let _obj: Employee = {
         seq: 0,

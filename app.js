@@ -43,7 +43,6 @@ app.post('/api/employee', (req, res) => {
 // edit employee state
 app.put('/api/employee/state/:seq', (req, res) => {
   let seq = parseInt(req.params.seq);
-  // console.log(seq);
   let employee = (() => {
     for(let o of data) {
       if (o.seq === seq) {

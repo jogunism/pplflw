@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useRef } from 'react';
+import React, { RefObject, useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { RootState } from './redux/reducers';
@@ -13,9 +13,10 @@ const App: React.FC<AppProps> = () => {
   const { data, addButtonDisabled } = useSelector((state: RootState) => state.main);
   const dispatch = useDispatch();
 
-  // const [ value, setValue ] = useState<Array<Employee>>();
   const inputId: RefObject<HTMLInputElement> = React.createRef();
+  const [ inputIdClass, setIdClass ] = useState('');
   const inputName: RefObject<HTMLInputElement> = React.createRef();
+  const [ inputNameClass, setNameClass ] = useState('');
 
   /* ----------------------
    * Methods
@@ -56,10 +57,16 @@ const App: React.FC<AppProps> = () => {
   const addEmployeeHandler = () => {
     let id = inputId.current?.value;
     let name = inputName.current?.value;
+
+    // inputbox border red
+    setIdClass(!id ? 'warn' : '');
+    setNameClass(!name ? 'warn' : '');
+
+    // validation
     if (!id || !name) {
-      // todo - inputbox red
       return;
     }
+
     dispatch(addEmployee({
       id,
       name,
@@ -67,6 +74,8 @@ const App: React.FC<AppProps> = () => {
   };
 
   const cancelAddEmployeeHandler = () => {
+    setIdClass('');
+    setNameClass('');
     dispatch(hideInputboxs());
   };
 
@@ -135,7 +144,7 @@ const App: React.FC<AppProps> = () => {
                       !employee.showInput ? 
                         <span>{ employee.id }</span> :
                         <input type="input"
-                          className="inputbox"
+                          className={`inputbox ${inputIdClass}`}
                           placeholder="id"
                           ref={ inputId }
                           // onChange={
@@ -150,7 +159,7 @@ const App: React.FC<AppProps> = () => {
                       !employee.showInput ?
                         <span>{ employee.name }</span> :
                         <input type="input"
-                          className="inputbox"
+                        className={`inputbox ${inputNameClass}`}
                           placeholder="name"
                           ref={ inputName }
                           // onChange={

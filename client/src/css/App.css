@@ -29,6 +29,9 @@ html {
   width: 90px;
   text-align: center;
 }
+.list .id .warn {
+  border: 1px solid #d10000;
+}
 
 .list .name {
   width: 200px;
@@ -36,6 +39,9 @@ html {
 .list .name .inputbox {
   width: 190px;
   text-align: center;
+}
+.list .name .warn {
+  border: 1px solid #d10000;
 }
 
 .list .state {

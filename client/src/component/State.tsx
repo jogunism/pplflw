@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { Employee } from '../redux/constants';
-// import { useSelector, useDispatch } from 'react-redux';
-import '../css/State.css';
 import { useDispatch } from 'react-redux';
 import { editState } from '../redux';
+import { Employee } from '../redux/constants';
+import '../css/State.css';
 
 export interface StateProps{
   employee: Employee;
@@ -63,6 +62,7 @@ const State: React.FC<StateProps> = ({ employee }) => {
         type="button"
         className="btn btn-sm"
         onClick={ () => buttonClickHandler(employee.seq) }
+        disabled={ employee.showFuncButton }
       >
         { displayState(employee.state) }
       </button>

@@ -14,6 +14,7 @@ const employeeListSuccess: ActionCreator<MainActionType> = (data: Array<Employee
   return { type: RETRIVED_EMPLOYEE_LIST, payload: data };
 }
 
+/** List */
 export const getEmployeeList = () => {
   return async (dispatch: Dispatch) => {
     try {
@@ -26,7 +27,7 @@ export const getEmployeeList = () => {
 };
 
 
-/** edit */
+/** Edit */
 export const showEditInputBox = (seq?: number | undefined) => {
   return { type: SET_EDIT_MODE, seq }
 }
@@ -66,7 +67,7 @@ export const editState = (seq: number) => {
 }
 
 
-/** add */
+/** Add */
 export const showAddInputboxs = () => {
   return { type: SET_ADD_MODE };
 };
