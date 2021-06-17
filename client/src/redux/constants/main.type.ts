@@ -1,47 +1,50 @@
 
 export interface Employee {
+  // data
   seq: number,
   id: string,
   name: string,
   state: number,
 
+  // view status
   showCheckbox?: boolean,
+  isChecked?: boolean,
   showInput?: boolean,
   showFuncButton?: boolean,
   showEditButton?: boolean,
 }
 
 export const RETRIVED_EMPLOYEE_LIST = 'RETRIVED_EMPLOYEE_LIST';
-export const SHOW_EDIT_INPUTBOX = 'SHOW_EDIT_INPUTBOX';
-export const HIDE_EDIT_INPUTBOX = 'HIDE_EDIT_INPUTBOX';
-export const SHOW_ADD_INPUTBOX = 'SHOW_ADD_INPUTBOX';
-export const HIDE_ADD_INPUTBOX = 'HIDE_ADD_INPUTBOX';
+export const SET_EDIT_MODE = 'SET_EDIT_MODE';
+export const CANCEL_EDIT_MODE = 'CANCEL_EDIT_MODE';
+export const SET_ADD_MODE = 'SET_ADD_MODE';
+export const CANCEL_ADD_MODE = 'CANCEL_ADD_MODE';
 
-interface EmployeeListAction {
+interface EmployeeListType {
   type: typeof RETRIVED_EMPLOYEE_LIST;
   payload: Array<Employee>;
 }
 
-interface ShowEditInputboxAction {
-  type: typeof SHOW_EDIT_INPUTBOX,
+interface ShowEditInputboxType {
+  type: typeof SET_EDIT_MODE,
   seq: number
 }
 
-interface HideEditInputboxAction {
-  type: typeof HIDE_EDIT_INPUTBOX,
-  seq: number
+interface HideEditInputboxType {
+  type: typeof CANCEL_EDIT_MODE,
+  seq?: number
 }
 
-interface ShowAddInputboxAction {
-  type: typeof SHOW_ADD_INPUTBOX
+interface ShowAddInputboxType {
+  type: typeof SET_ADD_MODE
 }
 
-interface HideAddInputboxAction {
-  type: typeof HIDE_ADD_INPUTBOX
+interface HideAddInputboxType {
+  type: typeof CANCEL_ADD_MODE
 }
 
-export type MainActionType = EmployeeListAction |
-                              ShowEditInputboxAction |
-                              HideEditInputboxAction |
-                              ShowAddInputboxAction |
-                              HideAddInputboxAction;
+export type MainActionType = EmployeeListType |
+                              ShowEditInputboxType |
+                              HideEditInputboxType |
+                              ShowAddInputboxType |
+                              HideAddInputboxType;

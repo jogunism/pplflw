@@ -3,10 +3,10 @@ import {
   MainActionType,
   Employee, 
   RETRIVED_EMPLOYEE_LIST, 
-  SHOW_ADD_INPUTBOX,
-  HIDE_ADD_INPUTBOX, 
-  SHOW_EDIT_INPUTBOX,
-  HIDE_EDIT_INPUTBOX
+  SET_EDIT_MODE,
+  CANCEL_EDIT_MODE,
+  SET_ADD_MODE,
+  CANCEL_ADD_MODE, 
 } from '../constants';
 import { mainService } from '../services';
 
@@ -25,12 +25,18 @@ export const getEmployeeList = () => {
   }
 };
 
+
+/** edit */
 export const showEditInputBox = (seq?: number | undefined) => {
-  return { type: SHOW_EDIT_INPUTBOX, seq }
+  return { type: SET_EDIT_MODE, seq }
 }
 
-export const hideEditInputBox = (seq?: number | undefined) => {
-  return { type: HIDE_EDIT_INPUTBOX, seq }
+export const hideAllEditInputBox = () => {
+  return { type: CANCEL_EDIT_MODE }
+};
+
+export const hideEditInputBox = (seq: number | undefined) => {
+  return { type: CANCEL_EDIT_MODE, seq }
 }
 
 export const editEmployee = (o: {
@@ -48,12 +54,25 @@ export const editEmployee = (o: {
   }
 }
 
+export const editState = (seq: number) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const response = await mainService.editState(seq);
+      dispatch(employeeListSuccess(response));
+    } catch(e) {
+      console.error(e);
+    }
+  }
+}
+
+
+/** add */
 export const showAddInputboxs = () => {
-  return { type: SHOW_ADD_INPUTBOX };
+  return { type: SET_ADD_MODE };
 };
 
 export const hideInputboxs = () => {
-  return { type: HIDE_ADD_INPUTBOX };
+  return { type: CANCEL_ADD_MODE };
 }
 
 export const addEmployee = (o = {}) => {

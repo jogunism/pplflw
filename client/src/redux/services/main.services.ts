@@ -32,10 +32,19 @@ export const mainService = {
     }
   },
 
+  async editState(seq: number) {
+    try {
+      const response = await http.put(`/employee/state/${seq}`);
+      return await Promise.resolve(response.data);
+    } catch (error) {
+      return await Promise.reject(error);
+    }
+  },
+
   // add
   async addEmployee(o = {}) {
     try {
-      const response = await http.post('/employees', o);
+      const response = await http.post('/employee', o);
       return await Promise.resolve(response.data);
     } catch (error) {
       return await Promise.reject(error);

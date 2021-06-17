@@ -1,10 +1,11 @@
 import React, { RefObject, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import './css/App.css';
 
 import { RootState } from './redux/reducers';
-import { addEmployee, editEmployee, getEmployeeList, hideEditInputBox, hideInputboxs, showAddInputboxs, showEditInputBox } from './redux/actions';
+import { addEmployee, editEmployee, getEmployeeList, hideAllEditInputBox, hideEditInputBox, hideInputboxs, showAddInputboxs, showEditInputBox } from './redux/actions';
 import { Employee } from './redux/constants';
+import State from './component/State';
+import './css/App.css';
 
 export interface AppProps{};
 const App: React.FC<AppProps> = () => {
@@ -19,21 +20,6 @@ const App: React.FC<AppProps> = () => {
   /* ----------------------
    * Methods
    */
-  const displayState = (n: number) => {
-    switch(n) {
-      case 0:
-        return 'ADDED';
-      case 1:
-        return 'IN-CHECK';
-      case 2:
-        return 'APPROVED';
-      case 3:
-        return 'ACTIVE';
-      case 4:
-        return 'INACTIVE';
-    }
-  };
-
   const displayButtons = (o: Employee) => {
     if (o.showFuncButton) {
       return (
@@ -53,7 +39,8 @@ const App: React.FC<AppProps> = () => {
     let checkbox = e.target as any;
     let seq: number = parseInt(checkbox.value);
 
-    // todo - 다른 checkbox 해제
+    // cancel edit mode all
+    dispatch(hideAllEditInputBox());
 
     if (checkbox.checked) {
       dispatch(showEditInputBox(seq));
@@ -61,14 +48,6 @@ const App: React.FC<AppProps> = () => {
       dispatch(hideEditInputBox(seq));
     }
   };
-
-  // const idOnchangeHanlder = (e: React.ChangeEvent<HTMLInputElement>, seq: number) => {
-  //   console.log((e.target as any).value, seq);
-  // }
-
-  // const nameOnchangeHanlder = (e: React.ChangeEvent<HTMLInputElement>, seq: number) => {
-  //   console.log((e.target as any).value);
-  // }
 
   const addButtonHandler = () => {
     dispatch(showAddInputboxs());
@@ -144,8 +123,9 @@ const App: React.FC<AppProps> = () => {
                         <input
                           type="checkbox"
                           className="checkbox"
-                          value={ employee.seq }
+                          defaultValue={ employee.seq ?? 0 }
                           onChange={ checkboxHandler }
+                          checked={ employee.isChecked ?? false }
                         /> :
                         ''
                     }
@@ -161,7 +141,7 @@ const App: React.FC<AppProps> = () => {
                           // onChange={
                           //   (e: React.ChangeEvent<HTMLInputElement>) => idOnchangeHanlder(e, employee.seq)
                           // }
-                          defaultValue={ employee.id }
+                          defaultValue={ employee.id ?? '' }
                         />
                     }
                   </td>
@@ -176,21 +156,12 @@ const App: React.FC<AppProps> = () => {
                           // onChange={
                           //   (e: React.ChangeEvent<HTMLInputElement>) => nameOnchangeHanlder(e, employee.seq)
                           // }
-                          defaultValue={ employee.name }
+                          defaultValue={ employee.name ?? '' }
                         />
                     }
                   </td>
                   <td className="state">
-                    {
-                      !employee.showInput ?
-                        <span>{ displayState(employee.state) }</span> :
-                        <input
-                          type="input"
-                          className="inputbox"
-                          defaultValue={ displayState(employee.state) }
-                          readOnly
-                        />
-                    }
+                    <State employee={ employee } />
                   </td>
                   <td> { displayButtons(employee) }</td>
                 </tr>

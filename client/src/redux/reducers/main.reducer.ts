@@ -2,10 +2,10 @@ import {
   MainActionType,
   Employee,
   RETRIVED_EMPLOYEE_LIST,
-  SHOW_ADD_INPUTBOX,
-  HIDE_ADD_INPUTBOX,
-  SHOW_EDIT_INPUTBOX,
-  HIDE_EDIT_INPUTBOX,
+  SET_ADD_MODE,
+  CANCEL_ADD_MODE,
+  SET_EDIT_MODE,
+  CANCEL_EDIT_MODE,
 } from '../constants';
 
 interface MainState {
@@ -24,6 +24,7 @@ export const mainReducer = (
 ): MainState => {
 
   switch (action.type) {
+    /** list */
     case RETRIVED_EMPLOYEE_LIST:
       return {
         ...state,
@@ -34,11 +35,12 @@ export const mainReducer = (
         addButtonDisabled: false,
       };
 
-    /** update */
-    case SHOW_EDIT_INPUTBOX:
+    /** edit */
+    case SET_EDIT_MODE:
       for (let o of state.data) {
         if (o.seq === action.seq) {
           o.showCheckbox = true;
+          o.isChecked = true;
           o.showInput = true;
           o.showFuncButton = false;
           o.showEditButton = true;
@@ -48,10 +50,21 @@ export const mainReducer = (
         ...state
       };
 
-    case HIDE_EDIT_INPUTBOX:
-      for (let o of state.data) {
-        if (o.seq === action.seq) {
+    case CANCEL_EDIT_MODE:
+      if (action.seq) {
+        for (let o of state.data) {
+          if (o.seq === action.seq) {
+            o.showCheckbox = true;
+            o.isChecked = false;
+            o.showInput = false;
+            o.showFuncButton = false;
+            o.showEditButton = false;
+          }
+        }
+      } else {
+        for (let o of state.data) {
           o.showCheckbox = true;
+          o.isChecked = false;
           o.showInput = false;
           o.showFuncButton = false;
           o.showEditButton = false;
@@ -63,7 +76,7 @@ export const mainReducer = (
       };
 
     /** add */
-    case SHOW_ADD_INPUTBOX:
+    case SET_ADD_MODE:
       let _obj: Employee = {
         seq: 0,
         id: '',
@@ -82,7 +95,7 @@ export const mainReducer = (
         addButtonDisabled: true
       }
 
-    case HIDE_ADD_INPUTBOX:
+    case CANCEL_ADD_MODE:
       state.data.splice(-1, 1)
       return {
         ...state,
