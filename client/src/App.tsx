@@ -3,16 +3,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import './css/App.css';
 
 import { RootState } from './redux/reducers';
-import { addEmployee, getEmployeeList, hideEditInputBox, hideInputboxs, showAddInputboxs, showEditInputBox } from './redux/actions';
+import { addEmployee, editEmployee, getEmployeeList, hideEditInputBox, hideInputboxs, showAddInputboxs, showEditInputBox } from './redux/actions';
 import { Employee } from './redux/constants';
 
 export interface AppProps{};
-
 const App: React.FC<AppProps> = () => {
 
-  const { data } = useSelector((state: RootState) => state.main);
+  const { data, addButtonDisabled } = useSelector((state: RootState) => state.main);
   const dispatch = useDispatch();
 
+  // const [ value, setValue ] = useState<Array<Employee>>();
   const inputId: RefObject<HTMLInputElement> = React.createRef();
   const inputName: RefObject<HTMLInputElement> = React.createRef();
 
@@ -35,7 +35,7 @@ const App: React.FC<AppProps> = () => {
   };
 
   const displayButtons = (o: Employee) => {
-    if (o.showInput) {
+    if (o.showFuncButton) {
       return (
         <div>
           <button type="button" className="btn" onClick={ addEmployeeHandler }>+</button> 
@@ -44,7 +44,7 @@ const App: React.FC<AppProps> = () => {
       );
     } else if (o.showEditButton) {
       return (
-        <button type="button" className="btn" onClick={() => editEmployeeHandler(o.seq) }>Edit</button>
+        <button type="button" className="btn" onClick={ () => editEmployeeHandler(o.seq) }>Edit</button>
       );
     }
   };
@@ -52,12 +52,23 @@ const App: React.FC<AppProps> = () => {
   const checkboxHandler = (e: React.FormEvent<HTMLInputElement>) => {
     let checkbox = e.target as any;
     let seq: number = parseInt(checkbox.value);
+
+    // todo - 다른 checkbox 해제
+
     if (checkbox.checked) {
       dispatch(showEditInputBox(seq));
     } else {
       dispatch(hideEditInputBox(seq));
     }
   };
+
+  // const idOnchangeHanlder = (e: React.ChangeEvent<HTMLInputElement>, seq: number) => {
+  //   console.log((e.target as any).value, seq);
+  // }
+
+  // const nameOnchangeHanlder = (e: React.ChangeEvent<HTMLInputElement>, seq: number) => {
+  //   console.log((e.target as any).value);
+  // }
 
   const addButtonHandler = () => {
     dispatch(showAddInputboxs());
@@ -80,8 +91,12 @@ const App: React.FC<AppProps> = () => {
     dispatch(hideInputboxs());
   };
 
-  const editEmployeeHandler = (seq: number | undefined) => {
-    console.log(seq);
+  const editEmployeeHandler = (seq: number) => {
+    dispatch(editEmployee({
+      seq,
+      id: inputId.current!.value,
+      name: inputName.current!.value
+    }))
   }
 
   /* ----------------------
@@ -143,6 +158,9 @@ const App: React.FC<AppProps> = () => {
                           className="inputbox"
                           placeholder="id"
                           ref={ inputId }
+                          // onChange={
+                          //   (e: React.ChangeEvent<HTMLInputElement>) => idOnchangeHanlder(e, employee.seq)
+                          // }
                           defaultValue={ employee.id }
                         />
                     }
@@ -155,6 +173,9 @@ const App: React.FC<AppProps> = () => {
                           className="inputbox"
                           placeholder="name"
                           ref={ inputName }
+                          // onChange={
+                          //   (e: React.ChangeEvent<HTMLInputElement>) => nameOnchangeHanlder(e, employee.seq)
+                          // }
                           defaultValue={ employee.name }
                         />
                     }
@@ -179,7 +200,14 @@ const App: React.FC<AppProps> = () => {
         </table>
       </div>
       <div className="buttons">
-        <button type="button" className="btn btn-md" onClick={ addButtonHandler }>ADD</button>
+        <button
+          type="button"
+          className="btn btn-md"
+          onClick={ addButtonHandler }
+          disabled={ addButtonDisabled }
+        >
+          ADD
+        </button>
       </div>
     </div>
   );

@@ -24,12 +24,13 @@ router.get('/', (req, res) => {
 
 // APIs.
 app.get('/api/employees', (_, res) => {
+  console.log(data);
   return res.send(data);
 });
 
 app.post('/api/employees', (req, res) => {
   data.push({
-    seq: data[data.length-1].seq,
+    seq: data[data.length-1].seq + 1,
     id: req.body.id,
     name: req.body.name,
     state: 0 // default state: ADDED
@@ -38,9 +39,20 @@ app.post('/api/employees', (req, res) => {
   return res.send(data);
 });
 
-app.put('/api/emplyees/:employeeId', (req, res) => {
-  console.log(req.params.employeeId);
-  return res.send();
+app.put('/api/employees/:id', (req, res) => {
+  // console.log(req.params.id);
+  // console.log(req.body);
+
+  data.map(o => {
+    if (o.seq === req.body.seq) {
+      o.id = req.body.id;
+      o.name = req.body.name;
+    }
+    return o;
+  });
+
+  console.log(data);
+  return res.send(data);
 });
 
 console.log(`Running at Port ${port}`);

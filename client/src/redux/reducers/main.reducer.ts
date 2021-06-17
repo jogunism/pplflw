@@ -10,10 +10,12 @@ import {
 
 interface MainState {
   data: Array<Employee>;
+  addButtonDisabled: boolean;
 }
 
 const initialState: MainState = {
-  data: [] as Array<Employee>
+  data: [] as Array<Employee>,
+  addButtonDisabled: false
 };
 
 export const mainReducer = (
@@ -28,9 +30,11 @@ export const mainReducer = (
         data: action.payload.map((o: Employee) => {
           o.showCheckbox = true;
           return o;
-        })
+        }),
+        addButtonDisabled: false,
       };
 
+    /** update */
     case SHOW_EDIT_INPUTBOX:
       for (let o of state.data) {
         if (o.seq === action.seq) {
@@ -55,9 +59,10 @@ export const mainReducer = (
       }
 
       return {
-        ...state
+        ...state,
       };
 
+    /** add */
     case SHOW_ADD_INPUTBOX:
       let _obj: Employee = {
         seq: 0,
@@ -73,14 +78,16 @@ export const mainReducer = (
       state.data.push(_obj);
       return {
         ...state,
-        data: state.data
+        data: state.data,
+        addButtonDisabled: true
       }
 
     case HIDE_ADD_INPUTBOX:
       state.data.splice(-1, 1)
       return {
         ...state,
-        data: state.data
+        data: state.data,
+        addButtonDisabled: false,
       }
 
     default:

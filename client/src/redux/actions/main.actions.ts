@@ -33,6 +33,21 @@ export const hideEditInputBox = (seq?: number | undefined) => {
   return { type: HIDE_EDIT_INPUTBOX, seq }
 }
 
+export const editEmployee = (o: {
+  seq: number;
+  id: string;
+  name: string;
+}) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const response = await mainService.editEmployee(o);
+      dispatch(employeeListSuccess(response));
+    } catch(e) {
+      console.error(e);
+    }
+  }
+}
+
 export const showAddInputboxs = () => {
   return { type: SHOW_ADD_INPUTBOX };
 };

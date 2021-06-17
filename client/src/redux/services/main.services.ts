@@ -7,7 +7,8 @@ const http = axios.create({
 http.defaults.headers.common['Content-Type'] = 'application/json';
 
 export const mainService = {
-  // async testMethod({ id }: { id: String }) {
+
+  // list
   async getEmployeeList() {
     try {
       const response = await http.get('/employees');
@@ -17,13 +18,27 @@ export const mainService = {
     }
   },
 
+  // edit
+  async editEmployee(o: {
+    seq: number;
+    id: string;
+    name: string;
+  }) {
+    try {
+      const response = await http.put(`/employees/${o.id}`, o);
+      return await Promise.resolve(response.data);
+    } catch (error) {
+      return await Promise.reject(error);
+    }
+  },
+
+  // add
   async addEmployee(o = {}) {
-    console.log(o);
     try {
       const response = await http.post('/employees', o);
       return await Promise.resolve(response.data);
     } catch (error) {
       return await Promise.reject(error);
     }
-  },
+  }
 };
