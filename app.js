@@ -18,25 +18,13 @@ const port = 8080;
 
 /** Default page */
 router.get('/', (req, res) => {
-  //__dirname : project folder.
+  //__dirname : context root.
   res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
 /** APIs */
 // employee list
 app.get('/api/employees', (_, res) => {
-  return res.send(data);
-});
-
-// add employee
-app.post('/api/employee', (req, res) => {
-  data.push({
-    seq: data[data.length-1].seq + 1,
-    id: req.body.id,
-    name: req.body.name,
-    state: 0 // default: ADDED
-  });
-
   return res.send(data);
 });
 
@@ -51,7 +39,7 @@ app.put('/api/employee/state/:seq', (req, res) => {
     }
   })();
   employee.state++;
-  if (employee.state > 4) {
+  if (employee.state > 5) {
     employee.state = 0;
   }
   return res.send(data);
@@ -66,7 +54,19 @@ app.put('/api/employee/:id', (req, res) => {
     }
     return o;
   });
-  console.log(data);
+  // console.log(data);
+  return res.send(data);
+});
+
+// add employee
+app.post('/api/employee', (req, res) => {
+  data.push({
+    seq: data[data.length-1].seq + 1,
+    id: req.body.id,
+    name: req.body.name,
+    state: 0 // default: ADDED
+  });
+
   return res.send(data);
 });
 

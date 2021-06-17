@@ -81,7 +81,7 @@ export const mainReducer = (
         seq: 0,
         id: '',
         name: '',
-        state: 0,
+        state: 1,
 
         showCheckbox: false,
         showInput: true,

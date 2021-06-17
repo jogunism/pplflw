@@ -17,15 +17,15 @@ const State: React.FC<StateProps> = ({ employee }) => {
    */
   const displayState = (n: number) => {
     switch(n) {
-      case 0:
-        return 'ADDED';
       case 1:
-        return 'IN-CHECK';
+        return 'ADDED';
       case 2:
-        return 'APPROVED';
+        return 'IN-CHECK';
       case 3:
-        return 'ACTIVE';
+        return 'APPROVED';
       case 4:
+        return 'ACTIVE';
+      case 5:
         return 'INACTIVE';
     }
   };
