@@ -40,7 +40,7 @@ app.put('/api/employee/state/:seq', (req, res) => {
   })();
   employee.state++;
   if (employee.state > 5) {
-    employee.state = 0;
+    employee.state = 1;
   }
   return res.send(data);
 });

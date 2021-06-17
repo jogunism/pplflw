@@ -41,6 +41,6 @@ module.exports = [
     seq: 7,
     id: 'jeny09',
     name: 'Jenifer Tylier',
-    // state: 1
+    state: 1
   },
 ];
